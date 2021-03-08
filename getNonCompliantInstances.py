@@ -23,6 +23,7 @@ for region in client.describe_regions()['Regions']:
     response = configClient.get_compliance_details_by_config_rule(
         ConfigRuleName='RequiredTagsForEC2Instances',
         ComplianceTypes=['NON_COMPLIANT'],
+            Limit=100
     )
 
     for results in response['EvaluationResults']:
@@ -56,6 +57,7 @@ for region in client.describe_regions()['Regions']:
                         output+="\nOwner: "+tag['Value'] + " - " + instance['InstanceId'] + " - " + instance['State']['Name'] + " - " + region['RegionName']# + " - "+ nonComplainceReason[instance['InstanceId']].replace('\n', ' ')
                         ownerFound=True
                 if not ownerFound:
+                    ownerName = "NA"
                     trailConfig = Config(
                         region_name=region['RegionName'],
                         signature_version='v4',

@@ -8,7 +8,7 @@ for region in client.describe_regions()['Regions']:
     if (region['RegionName'] in ['ap-northeast-3']):
         print("Current Issue. Skipping...")
         continue
-    
+
     botoConfig = Config(
         region_name=region['RegionName'],
         signature_version='v4',
@@ -66,7 +66,7 @@ for region in client.describe_regions()['Regions']:
                     'SourceDetails': [
                         {
                             'EventSource': 'aws.config',
-                            'MessageType': 'ConfigurationItemChangeNotification' ,
+                            'MessageType': 'ConfigurationItemChangeNotification',
                         },
                     ]
                 },
@@ -85,10 +85,15 @@ for region in client.describe_regions()['Regions']:
                             'ResourceValue': {
                                 'Value': 'RESOURCE_ID'
                             }
-                        }
+                        },
+                        'AutomationAssumeRole': {
+                                'StaticValue': {
+                                    'Values': ['arn:aws:iam::785217600689:role/Automation-Role']
+                                }
+                            }
                     },
                     'ResourceType': 'AWS::EC2::Instance',
-                    'Automatic': False,
+                    'Automatic': True,
                     'ExecutionControls': {
                         'SsmControls': {
                             'ConcurrentExecutionRatePercentage': 10,
@@ -101,7 +106,7 @@ for region in client.describe_regions()['Regions']:
             ]
         )
         response = config.start_config_rules_evaluation(
-        ConfigRuleNames=[
+            ConfigRuleNames=[
                 'RequiredTagsForEC2Instances',
             ]
         )
