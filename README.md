@@ -3,7 +3,6 @@
 Event bridge rule: https://eu-west-1.console.aws.amazon.com/events/home?region=eu-west-1#/eventbus/default/rules/stopInstancesWeekend
 Lambda function: https://eu-west-1.console.aws.amazon.com/lambda/home?region=eu-west-1#/functions/stopInstancesWeekend
 
-Source list for instances: https://docs.google.com/spreadsheets/d/1b_HWkmbrnsjtzehzzuK7Wdx0gF0h6RMt-hwJ36MTRfc/edit?usp=sharing
 
 - Once Instance id list is updated in Spreadsheet, list of instance ids to be updated in Lambda function source code. Once lambda function code is updated, `Deploy` button to be clicked. `Test` button should NOT be clicked as it invokes lambda function and will stop instances.
  ```
