@@ -5,7 +5,7 @@ def lambda_handler(event, context):
     
     prodInstancesList = ['i-00e661ddf9010ab9f', 'i-07d1cbb592c26b8b7', 'i-07098cdaf17dda77b',
     'i-04820952d73b4e222','i-09a02b16dd9e20952','i-014cd65aec4e3ed48','i-0badf3228c7723217',
-    'i-0d72ceba0317145d7']
+    'i-0d72ceba0317145d7', 'i-04ac04d00e7327538']
         
     client = boto3.client('ec2')
     
@@ -37,4 +37,4 @@ def lambda_handler(event, context):
                     print (instance['InstanceId'] + " - NOT To be stopped")
         if(len(tobeStoppedInstances) > 0):
             print("tobeStopped Instances: "+ str(tobeStoppedInstances))
-            #ec2client.stop_instances(InstanceIds=instances)
+            ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
