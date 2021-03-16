@@ -5,28 +5,31 @@ from botocore.exceptions import ClientError
 client = boto3.client('ec2')
 for region in client.describe_regions()['Regions']:
     print("Deploying config rules in "+region['RegionName'])
+    if (region['RegionName'] in ['ap-northeast-3']):
+        print("Current Issue. Skipping...")
+        continue
+
     botoConfig = Config(
-        region_name = region['RegionName'],
-        signature_version = 'v4',
-        retries = {
+        region_name=region['RegionName'],
+        signature_version='v4',
+        retries={
             'max_attempts': 10,
             'mode': 'standard'
         }
     )
 
-    config = boto3.client('config',config=botoConfig)
+    config = boto3.client('config', config=botoConfig)
 
     try:
-
         response = config.put_configuration_recorder(
             ConfigurationRecorder={
-                'name':'default',
+                'name': 'default',
                 'roleARN': 'arn:aws:iam::785217600689:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig',
                 'recordingGroup': {
                     'allSupported': False,
                     'includeGlobalResourceTypes': False,
                     'resourceTypes': [
-                        'AWS::EC2::Instance' ,
+                        'AWS::EC2::Instance',
                         'AWS::EC2::SecurityGroup'
                     ]
                 }
@@ -34,7 +37,7 @@ for region in client.describe_regions()['Regions']:
         )
         response = config.put_delivery_channel(
             DeliveryChannel={
-                'name':'default',
+                'name': 'default',
                 's3BucketName': 'config-ec2-poc',
                 'configSnapshotDeliveryProperties': {
                     'deliveryFrequency': 'TwentyFour_Hours'
@@ -42,33 +45,38 @@ for region in client.describe_regions()['Regions']:
             }
         )
         response = config.put_retention_configuration(
-        RetentionPeriodInDays=30
-    )
+            RetentionPeriodInDays=30
+        )
 
         response = config.start_configuration_recorder(
-        ConfigurationRecorderName='default'
-    )
-
+            ConfigurationRecorderName='default'
+        )
         response = config.put_config_rule(
             ConfigRule={
-                "ConfigRuleName": "TestRequiredTagsForEC2Instances",
-                "Description": "Checks whether the CostCenter and Owner tags are applied to EC2 instances.",
+                "ConfigRuleName": "RequiredTagsForEC2Instances",
+                "Description": "Checks whether the required tags are applied to EC2 instances.",
                 "Scope": {
                     "ComplianceResourceTypes": [
                         "AWS::EC2::Instance"
                     ]
                 },
                 "Source": {
-                    "Owner": "AWS",
-                    "SourceIdentifier": "REQUIRED_TAGS",
+                    "Owner": "CUSTOM_LAMBDA",
+                    "SourceIdentifier": "arn:aws:lambda:"+region['RegionName']+":785217600689:function:ec2ConfigEvaluator",
+                    'SourceDetails': [
+                        {
+                            'EventSource': 'aws.config',
+                            'MessageType': 'ConfigurationItemChangeNotification',
+                        },
+                    ]
                 },
-                "InputParameters": "{\"tag1Key\":\"Owner\",\"tag2Key\":\"Team\",\"tag3Key\":\"Scope\",\"tag4Key\":\"Delete\",\"tag4Value\":\"Yes,No,YES,NO\"}"
+                "InputParameters": "{\"Owner\":\"*\",\"Team\":\"*\",\"Name\":\"*\",\"Scope\":\"*\",\"Delete\":\"Yes,No\"}"
             }
         )
         response = config.put_remediation_configurations(
             RemediationConfigurations=[
                 {
-                    'ConfigRuleName': 'TestRequiredTagsForEC2Instances',
+                    'ConfigRuleName': 'RequiredTagsForEC2Instances',
                     'TargetType': 'SSM_DOCUMENT',
                     'TargetId': 'AWS-StopEC2Instance',
                     'TargetVersion': '1',
@@ -77,10 +85,15 @@ for region in client.describe_regions()['Regions']:
                             'ResourceValue': {
                                 'Value': 'RESOURCE_ID'
                             }
-                        }
+                        },
+                        'AutomationAssumeRole': {
+                                'StaticValue': {
+                                    'Values': ['arn:aws:iam::785217600689:role/Automation-Role']
+                                }
+                            }
                     },
                     'ResourceType': 'AWS::EC2::Instance',
-                    'Automatic': False,
+                    'Automatic': True,
                     'ExecutionControls': {
                         'SsmControls': {
                             'ConcurrentExecutionRatePercentage': 10,
@@ -92,5 +105,12 @@ for region in client.describe_regions()['Regions']:
                 }
             ]
         )
+        response = config.start_config_rules_evaluation(
+            ConfigRuleNames=[
+                'RequiredTagsForEC2Instances',
+            ]
+        )
+
     except ClientError as e:
         print(e)
+        exit(1)
