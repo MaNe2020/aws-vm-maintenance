@@ -12,6 +12,6 @@ Lambda function: https://eu-west-1.console.aws.amazon.com/lambda/home?region=eu-
   ```
 - Current cron configured in Event brdige rule to auto trigger lambda function at 8 PM UK every day
 ```
-0 19 ? * * *
+0 20 ? * * *
 ```
 The same has to be updated incase of any changes in schedule 
