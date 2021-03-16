@@ -3,10 +3,11 @@ from botocore.config import Config
 
 def lambda_handler(event, context):
     
-    prodInstancesList = ['i-00e661ddf9010ab9f', 'i-07d1cbb592c26b8b7', 'i-07098cdaf17dda77b',
-    'i-04820952d73b4e222','i-09a02b16dd9e20952','i-014cd65aec4e3ed48','i-0badf3228c7723217',
-    'i-0d72ceba0317145d7', 'i-04ac04d00e7327538','i-0e0971ea7232b3ebc']
-        
+    prodInstancesList = []
+    with open('instances.txt') as f:
+        instanceList = f.read().splitlines()
+    for instanceId in instanceList:
+        prodInstancesList.append(instanceId.split(":")[0])
     client = boto3.client('ec2')
     
     for region in client.describe_regions()['Regions']:
