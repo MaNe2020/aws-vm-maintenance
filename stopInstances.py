@@ -43,6 +43,5 @@ def lambda_handler(event, context):
                     print (instance['InstanceId'] + " - NOT To be stopped")
         if(len(tobeStoppedInstances) > 0):
             print("tobeStopped Instances: "+ str(tobeStoppedInstances))
-            #ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
-if __name__ == "__main__":
-    lambda_handler("test","test")
+            ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
+
