@@ -1,9 +1,14 @@
 import boto3
 from botocore.config import Config
+import requests
 
 def lambda_handler(event, context):
     
     prodInstancesList = []
+    instanceTxt = 'https://raw.githubusercontent.com/k8-proxy/aws-vm-maintenance/main/instances.txt'
+    r = requests.get(instanceTxt)
+    with open('instances.txt', 'wb') as f:
+        f.write(r.content)
     with open('instances.txt') as f:
         instanceList = f.read().splitlines()
     for instanceId in instanceList:
@@ -39,3 +44,4 @@ def lambda_handler(event, context):
         if(len(tobeStoppedInstances) > 0):
             print("tobeStopped Instances: "+ str(tobeStoppedInstances))
             ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
+

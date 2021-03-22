@@ -9,3 +9,4 @@ i-0d72ceba0317145d7:gmhscProxy
 i-04ac04d00e7327538:ICAP-Test-DP
 i-0e0971ea7232b3ebc:sharepointplugin
 i-07a4d95cac15e0a87:PatrickMinio
+i-0c069423444c85fdc:alertbot
