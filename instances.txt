@@ -1,11 +1,3 @@
-i-00e661ddf9010ab9f:icapdemo
-i-07d1cbb592c26b8b7:filedropdemo 
-i-07098cdaf17dda77b:sharepointproxy
-i-04820952d73b4e222:glasswallproxy
-i-09a02b16dd9e20952:GWEngProxy
-i-014cd65aec4e3ed48:OwaspProxy
-i-0badf3228c7723217:govUKProxy
-i-0d72ceba0317145d7:gmhscProxy
 i-04ac04d00e7327538:ICAP-Test-DP
 i-0e0971ea7232b3ebc:sharepointplugin
 i-07a4d95cac15e0a87:PatrickMinio
