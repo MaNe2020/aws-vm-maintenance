@@ -61,3 +61,5 @@ def lambda_handler(event, context):
                     print("Owner: "+ownerName+":"+instance['InstanceId']+":"+region['RegionName']+" Created Time: "+str(instance["LaunchTime"].strftime("%B %d, %Y"))+" Last active Time: "+str(response['Timestamp'].strftime("%B %d, %Y")))
                 
 
+if __name__ == "__main__":
+    lambda_handler("test","test")
