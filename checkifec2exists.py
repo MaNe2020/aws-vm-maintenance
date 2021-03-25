@@ -1,16 +1,15 @@
 import boto3
 from botocore.config import Config
-import urllib3
+import requests
 
 def lambda_handler(event, context):
     
     prodInstancesList = []
     instanceTxt = 'https://raw.githubusercontent.com/k8-proxy/aws-vm-maintenance/main/instances.txt'
-    http = urllib3.PoolManager()
-    response = http.request('GET',instanceTxt) 
-    with open('/tmp/instances.txt', 'wb') as f:
-        f.write(response.data)
-    with open('/tmp/instances.txt') as f:
+    r = requests.get(instanceTxt)
+    with open('instances.txt', 'wb') as f:
+        f.write(r.content)
+    with open('instances.txt') as f:
         instanceList = f.read().splitlines()
     for instanceId in instanceList:
         prodInstancesList.append(instanceId.split(":")[0])
@@ -30,18 +29,14 @@ def lambda_handler(event, context):
         {
             'Name': 'instance-state-name',
             'Values': [
-                'running'
+                'running','stopped'
             ]
         },
         ])
-        tobeStoppedInstances= []
         for instanceReservations in instanceIdList['Reservations']:
             for instance in instanceReservations['Instances']:
-                if (instance['InstanceId'] not in prodInstancesList):
-                    tobeStoppedInstances.append(instance['InstanceId'])
-                    #print (instance['InstanceId'] + " - To be stopped")
-                else:
-                    print (instance['InstanceId'] + " - NOT To be stopped")
-        if(len(tobeStoppedInstances) > 0):
-            print("tobeStopped Instances: "+ str(tobeStoppedInstances))
-            ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
+                if (instance['InstanceId'] in prodInstancesList):
+                    print (instance['InstanceId'] + " - Found")
+
+if __name__ == "__main__":
+    lambda_handler("test","test")
