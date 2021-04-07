@@ -2,3 +2,4 @@ i-04ac04d00e7327538:ICAP-Test-DP
 i-0e0971ea7232b3ebc:sharepointplugin
 i-07a4d95cac15e0a87:PatrickMinio
 i-0f168d9206733c738:ck8-icloudsdk
+i-0c58f4903012f01fc:k8-gw-cloud-sdk-testing
