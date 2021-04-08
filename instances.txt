@@ -6,3 +6,4 @@ i-0c58f4903012f01fc:k8-gw-cloud-sdk-testing
 i-035d5aefc96b29d28:cdr-plugin-dev-ci
 i-0d46f48eeb0262ac2:ck8-cloudsdk-cdr
 i-0e701a626dda4de34:k8-cloud-sdk-Dinis
+i-0164216dc9f4a7fdd:gw-menlo-integration-testing
