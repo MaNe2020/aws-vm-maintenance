@@ -7,3 +7,4 @@ i-035d5aefc96b29d28:cdr-plugin-dev-ci
 i-0d46f48eeb0262ac2:ck8-cloudsdk-cdr
 i-0e701a626dda4de34:k8-cloud-sdk-Dinis
 i-0164216dc9f4a7fdd:gw-menlo-integration-testing
+i-04cd3da13f6625508:k8-cloud-sdk-gw-menlo-testing
