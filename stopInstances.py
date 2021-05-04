@@ -38,10 +38,19 @@ def lambda_handler(event, context):
         for instanceReservations in instanceIdList['Reservations']:
             for instance in instanceReservations['Instances']:
                 if (instance['InstanceId'] not in prodInstancesList):
-                    tobeStoppedInstances.append(instance['InstanceId'])
+                    if("InstanceLifecycle" in instance):
+                        if(instance['InstanceLifecycle'] == "spot"):
+                            print("Encountered Spot Instance: "+str(instance['InstanceId']))
+                    else:
+                        tobeStoppedInstances.append(instance['InstanceId'])
                     #print (instance['InstanceId'] + " - To be stopped")
                 else:
                     print (instance['InstanceId'] + " - NOT To be stopped")
         if(len(tobeStoppedInstances) > 0):
             print("tobeStopped Instances: "+ str(tobeStoppedInstances))
-            ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
+            try:
+                ec2client.stop_instances(InstanceIds=tobeStoppedInstances)
+                print("Dry run")
+            except Exception as e:
+                print("Error in stopping Instance: "+str(e))
+                continue
