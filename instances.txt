@@ -4,3 +4,4 @@ i-07383b97f9e629609:ck8-SC-ck8-PENTEST
 i-0c9bb51fcf29dbea6:minio-dev
 i-0c95e4aad6b4fb541:gw-cloud-sdk
 i-0dd0f42f62b0f8d77:gw-cloud-sdk
+i-0711ed008a3977c47:gw-cloud-sdk
