@@ -2,3 +2,5 @@ i-0007c36d03ba901ca:qa-filedrop
 i-00b8844afcff393db:ck8-WC-ck8-PENTEST
 i-07383b97f9e629609:ck8-SC-ck8-PENTEST
 i-0c9bb51fcf29dbea6:minio-dev
+i-0c95e4aad6b4fb541:gw-cloud-sdk
+i-0dd0f42f62b0f8d77:gw-cloud-sdk
