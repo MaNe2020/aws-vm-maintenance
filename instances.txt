@@ -5,3 +5,5 @@ i-0c9bb51fcf29dbea6:minio-dev
 i-0c95e4aad6b4fb541:gw-cloud-sdk
 i-0dd0f42f62b0f8d77:gw-cloud-sdk
 i-0711ed008a3977c47:gw-cloud-sdk
+i-0b4231a4e80d31913:ydcompute-6af1ba-93fe3175-eb96-4418-804d-cb1696ff42a2-1
+i-0bf406a6bb3fc3b8c:Ubuntu
